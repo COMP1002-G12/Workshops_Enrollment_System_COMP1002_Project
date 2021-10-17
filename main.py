@@ -129,8 +129,37 @@ elif a == 2:
                     data = f.readlines()              
                     print(''.join(data))
                     f.close                                
+# =======================================================================================
+workshop_list = []
+workshop_content = []
+workshop_size = int(input('How many workshop you want to create:'))
+n = input('please enter the action you want to do(input/storage/update/retrieval):')
+if n == 'input':
+    for i in range(workshop_size):
+        workshop_list.append(input('please enter the title of the workshop:'))
+        workshop_content.append(input('please enter the content and information of the workshop:'))
+elif n == 'storage':
 
+elif n == 'update':
+    workshop_previous = input('enter the title of the workshop you want to update:')
+    workshop_index = workshop_list.index(workshop_previous)
+    workshop_list.remove(workshop_previous)
+    workshop_content.remove(workshop_previous)
+    workshop_update = input('enter the title you want to update:')
+    workshop_list.insert(workshop_index,workshop_update)
+    workshop_update_in_content = input('enter the information you want to update:')
+    workshop_content.insert(workshop_index, workshop_update_in_content)
 
+else:
+    def sequential_search():
+        workshop_retrieve: str = input('enter the title of the workshop you want to retrieve:')
+        length = len(workshop_size)
+        for i in range(length):
+            if workshop_list[i] == workshop_retrieve:
+                return i
+            else:
+                return False
+# =======================================================================================
     if c == 2:
         student_user = str(input("Student Username: "))
         student_passwd = str(input("Enter Student Password: "))
