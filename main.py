@@ -132,33 +132,36 @@ elif a == 2:
 # =======================================================================================
 workshop_list = []
 workshop_content = []
-workshop_size = int(input('How many workshop you want to create:'))
-n = input('please enter the action you want to do(input/storage/update/retrieval):')
-if n == 'input':
-    for i in range(workshop_size):
-        workshop_list.append(input('please enter the title of the workshop:'))
-        workshop_content.append(input('please enter the content and information of the workshop:'))
-elif n == 'storage':
-
-elif n == 'update':
-    workshop_previous = input('enter the title of the workshop you want to update:')
-    workshop_index = workshop_list.index(workshop_previous)
-    workshop_list.remove(workshop_previous)
-    workshop_content.remove(workshop_previous)
-    workshop_update = input('enter the title you want to update:')
-    workshop_list.insert(workshop_index,workshop_update)
-    workshop_update_in_content = input('enter the information you want to update:')
-    workshop_content.insert(workshop_index, workshop_update_in_content)
-
-else:
-    def sequential_search():
-        workshop_retrieve: str = input('enter the title of the workshop you want to retrieve:')
-        length = len(workshop_size)
-        for i in range(length):
-            if workshop_list[i] == workshop_retrieve:
-                return i
-            else:
-                return False
+workshop_size = int(input('How many workshop do you want to create:'))
+while True:
+    n = input('please enter the action(input/storage/modify/update/retrieval/stop):')
+    if n == 'input':
+        for i in range(workshop_size):
+            workshop_list.append(input('please enter the title of the workshop:'))
+            workshop_content.append(input('please enter the content and information of the workshop:'))
+    elif n == 'update':
+        workshop_update_size = int(input('How many workshop do you want to update:'))
+        for i in range(workshop_update_size):
+            workshop_list.append(input('please enter the title of the workshop:'))
+            workshop_content.append(input('please enter the content and information of the workshop:'))
+    elif n == 'modify':
+        workshop_previous = input('enter the title of the workshop you want to modify:')
+        workshop_index = workshop_list.index(workshop_previous)
+        workshop_list.remove(workshop_previous)
+        workshop_content.remove(workshop_content[workshop_index])
+        workshop_update = input('enter the modification title:')
+        workshop_list.insert(workshop_index, workshop_update)
+        workshop_update_in_content = input('enter the information you want to modify:')
+        workshop_content.insert(workshop_index, workshop_update_in_content)
+    elif n == 'storage':
+        print('没有写')                    # 未完成！！！！！！！！！！！！！！！
+    elif n == 'retrieval':
+        workshop_previous = input('enter the title of the workshop you want to retrieval:')
+        workshop_index = workshop_list.index(workshop_previous)
+        print('the tile of the workshop is:'+workshop_list[workshop_index])
+        print('the information of the workshop is:'+workshop_content[workshop_index])
+    else:
+        break
 # =======================================================================================
     if c == 2:
         student_user = str(input("Student Username: "))
