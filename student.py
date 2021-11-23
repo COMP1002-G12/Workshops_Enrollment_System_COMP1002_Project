@@ -1,7 +1,12 @@
+import csv
+
 def S1(student_user_ID):
     
     """ This part is for students to choose the workshop """
+
     data_file = f'./student/{student_user_ID}.txt'
+    workshop_csv = f'./admin/document/workshop.csv'
+    workshop_list1 = []
 
     
     with open(data_file,'r') as f:
@@ -13,19 +18,21 @@ def S1(student_user_ID):
     l1 = l[::2]
     l2 = l[1::2]                    
     l2 = list(map(int,l2))
-
-    print('-' * 40)
-    print("{0:^20}".format("Student_ID"),'|',"{0:^20}".format("Workshops"),sep='')
-    print('-' * 40)
-    l3 = []
-    l4 = []
-    for i in range(len(l2)):
-        d1 = "{0:^20}".format(l1[i],l2[i])+'|'+"{1:^20}".format(l1[i],l2[i])
-        l3.append(d1)
-        l4.append(l2[i])
-    l5 = sorted(l3)
-    for i in l5:
-        print(i)
+    if l1 == l2 == []:
+        print("* You haven't chosen any workshop.")
+    else:
+        print('-' * 40)
+        print("{0:^20}".format("Student_ID"),'|',"{0:^20}".format("Workshops"),sep='')
+        print('-' * 40)
+        l3 = []
+        l4 = []
+        for i in range(len(l2)):
+            d1 = "{0:^20}".format(l1[i],l2[i])+'|'+"{1:^20}".format(l1[i],l2[i])
+            l3.append(d1)
+            l4.append(l2[i])
+        l5 = sorted(l3)
+        for i in l5:
+            print(i)
 
     signup = str(input("Please give the number of the workshop which you want to sign up: "))
     while int(signup) in l4:
@@ -58,6 +65,25 @@ def S1(student_user_ID):
         f.write('\t')
         f.write(signup)
 
+    with open(workshop_csv, 'r', encoding='utf-8') as file:
+        lines = file.readlines()
+        file.close()
+
+    for line in lines:
+        workshop_content = line.split(',')
+        workshop_list1.append(workshop_content)
+
+    with open(workshop_csv, 'w', encoding='utf-8', newline='') as file:
+        for b in workshop_list1:
+            if signup != b[1]:
+                c = [str(int(b[0])), str(b[1]), str(b[2]),str(b[3]),str(b[4][:-1])]
+                csv_writer = csv.writer(file)
+                csv_writer.writerow(c)
+            else:
+                c = [str(int(b[0])), str(b[1]), str(b[2]),str(b[3]),str(int(b[4][:-1])-1)]
+                csv_writer = csv.writer(file)
+                csv_writer.writerow(c)
+
                  
             
     
@@ -69,6 +95,8 @@ def S2(student_user_ID):
 
     data_file = f'./student/{student_user_ID}.txt'
     log = f'./admin/document/log.txt'
+    workshop_csv = f'./admin/document/workshop.csv'
+    workshop_list1 = []
 
     with open(data_file,'r') as f:
         print('Your choice:')
@@ -79,20 +107,22 @@ def S2(student_user_ID):
     l1 = l[::2]
     l2 = l[1::2]                    
     l2 = list(map(int, l2))
+    if l1 == l2 == []:
+        print("* You haven't chosen any workshop.")
+    else:
+        print('-' * 40)
+        print("{0:^20}".format("Student_ID"),'|',"{0:^20}".format("Workshops"),sep='')
+        print('-' * 40)
+        l3 = []
+        l4 = []
 
-    print('-' * 40)
-    print("{0:^20}".format("Student_ID"),'|',"{0:^20}".format("Workshops"),sep='')
-    print('-' * 40)
-    l3 = []
-    l4 = []
-
-    for i in range(len(l2)):
-        d1 = "{0:^20}".format(l1[i],l2[i])+'|'+"{1:^20}".format(l1[i],l2[i])
-        l3.append(d1)
-        l4.append(l2[i])    
-    l5 = sorted(l3)
-    for i in l5:
-        print(i)
+        for i in range(len(l2)):
+            d1 = "{0:^20}".format(l1[i],l2[i])+'|'+"{1:^20}".format(l1[i],l2[i])
+            l3.append(d1)
+            l4.append(l2[i])    
+        l5 = sorted(l3)
+        for i in l5:
+            print(i)
     
     cancel = str(input("Please give the number of the workshop which you want to cancel: "))
     while int(cancel) not in l4:
@@ -125,7 +155,24 @@ def S2(student_user_ID):
             if line.strip("\n") != student_user_ID+'\t'+cancel:
                 f.write(line)
 
+    with open(workshop_csv, 'r', encoding='utf-8') as file:
+        lines = file.readlines()
+        file.close()
 
+    for line in lines:
+        workshop_content = line.split(',')
+        workshop_list1.append(workshop_content)
+
+    with open(workshop_csv, 'w', encoding='utf-8', newline='') as file:
+        for b in workshop_list1:
+            if cancel != b[1]:
+                c = [str(int(b[0])), str(b[1]), str(b[2]),str(b[3]),str(b[4][:-1])]
+                csv_writer = csv.writer(file)
+                csv_writer.writerow(c)
+            else:
+                c = [str(int(b[0])), str(b[1]), str(b[2]),str(b[3]),str(int(b[4][:-1])+1)]
+                csv_writer = csv.writer(file)
+                csv_writer.writerow(c)
 
 
 
@@ -184,3 +231,17 @@ def S3(student_user_ID):
 
     print("Password modified successfully --- Student Account", student_user_ID)
 
+def Student(d,ID):
+    a = True
+    if d == 1:
+        S1(ID)
+        return a
+    elif d == 2:
+        S2(ID)
+        return a
+    elif d == 3:
+        S3(ID)
+        return a
+    elif d == 4:
+        a = False
+        return a
