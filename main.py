@@ -68,7 +68,7 @@ def Log_In(c):
                     admin_passwd = str(input("Enter Student Password: "))
                 
                 if line1 == admin_passwd:
-                    print("Successful into Workshop Enroll System --- Admin Account")
+                    print("Successful into Workshop Enrollment System --- Admin Account")
             
 
     if c == 2:
@@ -94,53 +94,44 @@ def Log_In(c):
                     student_passwd = str(input("Enter Student Password: "))
 
                 if line1 == student_passwd:
-                    print("Successful into Workshop Enroll System --- Student Account", student_user_ID)
+                    print("Successful into Workshop Enrollment System --- Student Account", student_user_ID)
                 
                 return student_user_ID
 
+
+def judgement2(workshop_list1,signup):
+    controller = True
+    for i in range(len(workshop_list1)):
+        if controller:
+            if signup == workshop_list1[i][1] and int(workshop_list1[i][4]) > 0:
+                controller = False
+    return controller
 
 def S1(student_user_ID):
     
     """ This part is for students to choose the workshop """
 
+    log = f'./admin/document/log.txt'
     data_file = f'./student/{student_user_ID}.txt'
     workshop_csv = f'./admin/document/workshop.csv'
     workshop_list1 = []
 
-    with open(workshop_csv, 'r', encoding='utf-8') as file:
-        lines = file.readlines()
-        file.close()
-    print()
-    print("Workshops: ")
-    if lines == []:
-        print("* No workshop yet. Please add workshop first.")
-        return
-    else:
-        field_names = ['Index', 'Workshop_ID', 'Workshop_Name', 'Total','Remain']
-        print('-' * 104)
-        print(
-        '{0:^20}'.format(field_names[0]), '|', '{0:^20}'.format(field_names[1]), '|', '{0:^20}'.format(field_names[2]), '|',
-        '{0:^20}'.format(field_names[3]),'|','{0:^20}'.format(field_names[4]),sep='')
-        print('-' * 104)
-        for line in lines:
-            workshop_content = line.split(',')
-            print('{0:^20}'.format(workshop_content[0]), '|', '{0:^20}'.format(workshop_content[1]), '|',
-                '{0:^20}'.format(workshop_content[2]), '|','{0:^20}'.format(workshop_content[3]), '|','{0:^20}'.format(workshop_content[4][0:-1]), sep='')
-
-    
     with open(data_file,'r') as f:
-        print()
-        print()
         print('Your choice:')
         data = f.readlines()              
         f.close
+
     s1 = ''.join(data[1:])
     l = s1.split()
     l1 = l[::2]
     l2 = l[1::2]                    
     l2 = list(map(int,l2))
+
     if l1 == l2 == []:
         print("* You haven't chosen any workshop.")
+        l4 = []
+        for i in range(len(l2)):
+            l4.append(l2[i])
     else:
         print('-' * 40)
         print("{0:^20}".format("Student_ID"),'|',"{0:^20}".format("Workshops"),sep='')
@@ -155,24 +146,40 @@ def S1(student_user_ID):
         for i in l5:
             print(i)
 
+    with open(workshop_csv, 'r', encoding='utf-8') as file:
+        lines = file.readlines()
+        file.close()
+
+    for line in lines:
+        workshop_content = line.split(',')
+        workshop_list1.append(workshop_content)
+
     signup = str(input("Please give the number of the workshop which you want to sign up: "))
+    
     while int(signup) in l4:
         print("You have chosen this workshop.")
         signup = str(input("Please give the number of the workshop which you want to sign up again: "))
+
+    while judgement2(workshop_list1,signup):
+        print("There is no remaining in this workshop.")
+        signup = str(input("Please give the number of the workshop which you want to sign up: "))
+
     print("Please check your choice:",end="")
     check = int(input('(Put 1 for "Yes"; Put 2 for "No")\n'))
-    log = f'./admin/document/log.txt'
-        
-        
-     
+
     while check != 1:
         signup = str(input("Please give the number of the workshop which you want to sign up again: "))
+        
         while int(signup) in l4:
             print("You have chosen this workshop.")
-            signup = str(input("Please give the number of the workshop which you want to sign up again: "))
+            signup = str(input("Please give the number of the workshop which you want to sign up again: "))       
+
+        while judgement2(workshop_list1,signup):
+            print("There is no remaining in this workshop.")
+            signup = str(input("Please give the number of the workshop which you want to sign up: "))
+
         print("Please check your choice:",end="")
         check = int(input('(Put 1 for "Yes"; Put 2 for "No")\n'))
-
 
     with open(data_file,'a') as f:
         f.write('\n')
@@ -186,14 +193,6 @@ def S1(student_user_ID):
         f.write('\t')
         f.write(signup)
 
-    with open(workshop_csv, 'r', encoding='utf-8') as file:
-        lines = file.readlines()
-        file.close()
-
-    for line in lines:
-        workshop_content = line.split(',')
-        workshop_list1.append(workshop_content)
-
     with open(workshop_csv, 'w', encoding='utf-8', newline='') as file:
         for b in workshop_list1:
             if signup != b[1]:
@@ -204,11 +203,6 @@ def S1(student_user_ID):
                 c = [str(int(b[0])), str(b[1]), str(b[2]),str(b[3]),str(int(b[4][:-1])-1)]
                 csv_writer = csv.writer(file)
                 csv_writer.writerow(c)
-
-                 
-            
-    
-    
 
 def S2(student_user_ID):
 
@@ -223,20 +217,22 @@ def S2(student_user_ID):
         print('Your choice:')
         data = f.readlines()              
         f.close
+
     s1 = ''.join(data[1:])
     l = s1.split()
     l1 = l[::2]
     l2 = l[1::2]                    
     l2 = list(map(int, l2))
+
     if l1 == l2 == []:
-        print("* You haven't chosen any workshop.")
+        print("* You haven't chosen any workshop. Please choose workshop first.")
+        return
     else:
         print('-' * 40)
         print("{0:^20}".format("Student_ID"),'|',"{0:^20}".format("Workshops"),sep='')
         print('-' * 40)
         l3 = []
         l4 = []
-
         for i in range(len(l2)):
             d1 = "{0:^20}".format(l1[i],l2[i])+'|'+"{1:^20}".format(l1[i],l2[i])
             l3.append(d1)
@@ -246,17 +242,21 @@ def S2(student_user_ID):
             print(i)
     
     cancel = str(input("Please give the number of the workshop which you want to cancel: "))
+    
     while int(cancel) not in l4:
         print("You haven't chosen this workshop.")
         cancel = str(input("Please give the number of the workshop which you want to cancel: "))
+    
     print('Please check your choice:',end='')
     check = int(input('(Put 1 for "Yes"; Put 2 for "No")\n'))
                 
     while check != 1:
         cancel = str(input("Please give the number of the workshop which you want to cancel: "))
+        
         while int(cancel) not in l4:
             print("You haven't chosen this workshop.")
             cancel = str(input("Please give the number of the workshop which you want to cancel: "))
+        
         print('Please check your choice:',end='')
         check = int(input('(Put 1 for "Yes"; Put 2 for "No")\n'))
                 
@@ -295,9 +295,6 @@ def S2(student_user_ID):
                 csv_writer = csv.writer(file)
                 csv_writer.writerow(c)
 
-
-
-
 def S3(student_user_ID):
     
     """ This part is for students to modify the Log_In password """
@@ -310,13 +307,13 @@ def S3(student_user_ID):
         f.close()
 
     password = str(input("Please enter the current password: "))
+
     while password != password0:
         print("The current password is incorrect, please re-enter.")
         password = str(input("Please enter the current password: "))
     
     if password == password0:
         print("The current password is correct.")
-            
 
     password1 = str(input("Enter new Student_Password: "))
     password2 = str(input("Enter new Student_Password again: "))
@@ -366,7 +363,6 @@ def Student(d,ID):
     elif d == 4:
         a = False
         return a
-
 
 
 
@@ -604,9 +600,19 @@ def retrieve_log():
             print(i)
             
     while True:
-        choose = int(input("Enter 1 for inputing the workshop number to know who chose this workshop; Enter 2 for inputing student_ID to know which workshops are selected:\n"))
-            
-        if choose == 1:
+        #choose = int(input("Enter 1 for inputing the workshop number to know who chose this workshop; Enter 2 for inputing student_ID to know which workshops are selected; Enter 3 Quit:\n"))
+        
+        choose = {1:"Input the workshop number to know who chose this workshop",2:"Input student_ID to know which workshops are selected",3:"Quit"}
+        print()
+        print()
+        print("-"*75)
+        print("{0:^10}".format("Number"),'|',"{0:^65}".format("Function"))
+        print("-"*75)
+        for k,v in choose.items():
+            print("{0:^10}".format(k),'|',"{0:}".format(v))
+        n_choose = int(input('Enter the number:\n'))
+
+        if n_choose == 1:
             v = int(input("Enter the workshop number to know who chose this workshop: "))
             l = []
             for i in range(len(l2)):
@@ -620,7 +626,7 @@ def retrieve_log():
             else:
                 print("These student_IDs chose this workshop:\n",sorted(l))
 
-        elif choose == 2:
+        elif n_choose == 2:
             k = str(input("Enter student_ID to know which workshops are selected: "))
             l = []
             for i in range(len(l2)):
@@ -633,7 +639,7 @@ def retrieve_log():
                 print("This student hasn't chosen workshop yet.")
             else:
                 print("This student chose these workshops:\n",sorted(l))
-        elif choose == 3:
+        elif n_choose == 3:
             break
 
 def cancel_Sworkshop():
@@ -889,14 +895,41 @@ print("*" * 35)
 
 
 while True:
-    a = int(input('Enter 1 for sign up; Enter 2 for sign in; Enter 3 for quit; Enter 4 for About:\n'))
-    if a == 1:
-        b = int(input("Sign Up: Enter 1 for Admin; Enter 2 for Student\n"))
-        Sign_Up(b)
-    elif a == 2:
-        c = int(input("Sign In: Enter 1 for Admin; Enter 2 for Student\n"))
-        ID = Log_In(c)
-        if c == 1:
+    #a = int(input('Enter 1 for sign up; Enter 2 for sign in; Enter 3 for quit; Enter 4 for About:\n'))
+    a = {1:"Sign Up", 2:"Sign In", 3:"Quit", 4:"About"}
+    print()
+    print("-"*25)
+    print("{0:^10}".format("Number"),'|',"{0:^15}".format("Function"))
+    print("-"*25)
+    for k,v in a.items():
+        print("{0:^10}".format(k),'|',"{0:}".format(v))
+    num_a = int(input('Enter the number:\n'))
+
+    if num_a == 1:
+        #b = int(input("Sign Up: Enter 1 for Admin; Enter 2 for Student\n"))
+        b = {1:"Sign Up -Admin", 2:"Sign Up -Students"}
+        print()
+        print("-"*30)
+        print("{0:^10}".format("Number"),'|',"{0:^20}".format("Function"))
+        print("-"*30)
+        for k,v in b.items():
+            print("{0:^10}".format(k),'|',"{0:}".format(v))
+        num_b = int(input('Enter the number:\n'))
+
+        Sign_Up(num_b)
+    elif num_a == 2:
+        #c = int(input("Sign In: Enter 1 for Admin; Enter 2 for Student\n"))
+        c = {1:"Sign In -Admin", 2:"Sign In -Students"}
+        print()
+        print("-"*35)
+        print("{0:^10}".format("Number"),'|',"{0:^25}".format("Function"))
+        print("-"*35)
+        for k,v in c.items():
+            print("{0:^10}".format(k),'|',"{0:}".format(v))
+        num_c = int(input('Enter the number:\n'))
+
+        ID = Log_In(num_c)
+        if num_c == 1:
             a = True
             while a:
                 D = {1:"Input & Storage Workshops",2:"Delete Workshops",3:"Search Workshops",4:"Select Workshops for Students", 5:"Cancel the Workshops select by Students", 6:"Search & Read Log", 7:"Reset Students' Password", 8:"Log out"}
@@ -910,15 +943,23 @@ while True:
                 e = int(input('Enter the number:\n'))
                 a = Authority(e)
 
-        if c == 2:
+        if num_c == 2:
             a = True
             while a:
-                d = int(input('Enter 1 for sign up workshop; Enter 2 for cancel workshop; Enter 3 for change password; Enter 4 for Log out\n'))
-                a = Student(d,ID)
+                #d = int(input('Enter 1 for sign up workshop; Enter 2 for cancel workshop; Enter 3 for change password; Enter 4 for Log out\n'))
+                d = {1:"Enroll Workshops", 2:"Cancel Workshops", 3:"Change Password", 4:"Log out"}
+                print()
+                print("-"*25)
+                print("{0:^10}".format("Number"),'|',"{0:^15}".format("Function"))
+                print("-"*25)
+                for k,v in d.items():
+                    print("{0:^10}".format(k),'|',"{0:}".format(v))
+                num_d = int(input('Enter the number:\n'))
+                a = Student(num_d,ID)
                 
-    elif a == 3:
+    elif num_a == 3:
         break
-    elif a == 4:
+    elif num_a == 4:
         print("*" * 41)
         print("*" + " " * 15 + "--About--" + " " * 15 + "*")
         print("*" + " " * 39 + "*")
