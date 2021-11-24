@@ -6,7 +6,9 @@
   - Workshop Enrollment/Cancellation by Students
   - System Login by Administrator and Students
   - Admin Announcements
-  - Students Rating feedback
+  - Students Rating Feedback
+ 
+* Using TXT file and CSV file to storage data *
 
 ### Group Members (PolyU Class 2025 COMP1002 Group 12): 
 #### Guanlin JIANG, Minghao LIU, Ziyang CHEN, Boyan HE
