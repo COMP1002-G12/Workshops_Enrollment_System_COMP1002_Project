@@ -5,6 +5,7 @@
   - Workshop Information Input/Storage/Update/Retrieval by Administrator
   - Workshop Enrollment/Cancellation by Students
   - System Login by Administrator and Students
+  - Workshops Description
   - Admin Announcements
   - Students Rating Feedback
  
