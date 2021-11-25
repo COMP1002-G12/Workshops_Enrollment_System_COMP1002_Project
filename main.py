@@ -138,6 +138,12 @@ def S1(student_user_ID):
         workshop_content = line.split(',')
         print('{0:^20}'.format(workshop_content[0]), '|', '{0:^20}'.format(workshop_content[1]),'|','{0:^20}'.format(workshop_content[2]), '|','{0:^20}'.format(workshop_content[3]), '|','{0:^20}'.format(workshop_content[4][0:-1]), sep='')
 
+    ask = int(input("Enter 1 for Read Workshop Description; Enter 2 for Skip: "))
+    if ask == 1:
+        student_check_ws()
+    elif ask == 2:
+        pass
+
     with open(data_file,'r') as f:
         print()
         print('Your choice:')
@@ -345,7 +351,6 @@ def S3(student_user_ID):
         workshop_content = line.split(',')
         print('{0:^20}'.format(workshop_content[0]), '|', '{0:^20}'.format(workshop_content[1]),'|','{0:^20}'.format(workshop_content[2]), '|','{0:^20}'.format(workshop_content[3]), '|','{0:^20}'.format(workshop_content[4][0:-1]), sep='')
 
-    
     with open(data_file,'r') as f:
         print()
         print('Your choice:')
@@ -370,10 +375,16 @@ def S3(student_user_ID):
         for i in range(len(l2)):
             d1 = "{0:^20}".format(l1[i],l2[i])+'|'+"{1:^20}".format(l1[i],l2[i])
             l3.append(d1)
-            l4.append(l2[i])    
+            l4.append(l2[i])
         l5 = sorted(l3)
         for i in l5:
             print(i)
+    print()
+    ask = int(input("Enter 1 for Read Workshop Description; Enter 2 for Skip: "))
+    if ask == 1:
+        student_check_ws()
+    elif ask == 2:
+        pass
 
 
 def S4(student_user_ID):
@@ -429,6 +440,18 @@ def S4(student_user_ID):
             f.write(line)
 
     print("Password modified successfully --- Student Account", student_user_ID)
+
+
+def student_check_ws():
+    workshop_id = input("Enter the Workshop ID: ")
+    desc_file = workshop_id + ".txt"
+    file_dir = "./admin/document/workshop/"
+    file = file_dir + desc_file
+    
+    with open(file, "r") as f:
+        content = f.readlines()
+    print()
+    print("Description: " + ''.join(content))
 
 
 def Student(d,ID):
@@ -490,7 +513,7 @@ def judgement5(workshop_list1,workshop):
 def update_workshop():
     workshop_list1 = []
     workshop_csv = f'./admin/document/workshop.csv'    
-    
+
     with open(workshop_csv, 'r', encoding='utf-8') as file:
         lines = file.readlines()
         file.close()
@@ -522,9 +545,11 @@ def update_workshop():
         workshop_ID = str(input("Please enter current workshop ID: "))
         workshop_name = str(input("Please enter current workshop name: "))    
 
+    workshop_des = f'./admin/document/workshop/{workshop_ID}.txt'
+
     z = True
     while z:
-        D1 = {1:"Change 'Workshop_Name'",2:"Change 'Total'",3:"Exit"}
+        D1 = {1:"Change 'Workshop_Name'",2:"Change 'Total'",3:"Change Description",4:"Exit"}
         print("-"*35)
         print("{0:^10}".format("Number"),'|',"{0:^20}".format("Function"))
         print("-"*35)
@@ -602,6 +627,20 @@ def update_workshop():
             z = False
         
         elif n == 3:
+            with open(workshop_des,'r') as f:
+                lines = f.readlines()
+
+            desc = str(input("Please enter new Description: "))
+            lines[0] = desc+'\n'
+
+            with open(workshop_des,'w') as f:
+                for line in lines:
+                    f.write(line)
+                f.close()
+
+            z = False
+        
+        elif n == 4:
             z = False
 
 
@@ -630,7 +669,7 @@ def delete_workshop():
         workshop_content = line.split(',')
         workshop_list1.append(workshop_content)
     
-    workshop_ID = str(input('Please enter the workshop name(Enter "Q" or "q" to select again): '))
+    workshop_ID = str(input('Please enter the workshop ID(Enter "Q" or "q" to select again): '))
     if workshop_ID.lower() == "q":
         return
     else:
@@ -654,6 +693,9 @@ def delete_workshop():
                         c = [str(int(b[0])), str(b[1]), str(b[2]),str(b[3]),str(b[4][:-1])]
                         csv_writer = csv.writer(file)
                         csv_writer.writerow(c)
+
+        ws_desc_file = f'./admin/document/workshop/{workshop_ID}.txt'
+        os.remove(ws_desc_file)
         
         with open(workshop_csv, 'r', encoding='utf-8') as file:
             lines = file.readlines()
@@ -749,6 +791,14 @@ def retrieve_workshop():
     for b in workshop_list1:
         if workshop == b[1] or workshop == b[2]:
             print('{0:^20}'.format(b[1]), '|', '{0:^20}'.format(b[2]), '|','{0:^20}'.format(b[3]),'|','{0:^20}'.format(b[4][0:-1]), sep='')
+    
+    print()
+    ask = int(input("Enter 1 for Read Workshop Description; Enter 2 for Skip: "))
+    if ask == 1:
+        student_check_ws()
+        print()
+    elif ask == 2:
+        pass
 
 
 def storage_workshop():
@@ -821,6 +871,35 @@ def storage_workshop():
     for line in lines:
         workshop_content = line.split(',')
         print('{0:^20}'.format(workshop_content[0]),'|','{0:^20}'.format(workshop_content[1]),'|','{0:^20}'.format(workshop_content[2]),'|','{0:^20}'.format(workshop_content[3]),'|','{0:^20}'.format(workshop_content[4][0:-1]),sep='')
+
+
+def ws_description():
+
+    workshop_csv = f"./admin/document/workshop.csv"
+
+    with open (workshop_csv,'r',encoding='utf-8') as file:
+        lines = file.readlines()
+    if lines == []:
+        print("* No workshop yet. Please add workshop first.")
+        return
+    else:
+        field_names = ['Index','Workshop_ID','Workshop_Name','Total','Remain']
+
+        print('-'*104)
+        print('{0:^20}'.format(field_names[0]),'|','{0:^20}'.format(field_names[1]),'|','{0:^20}'.format(field_names[2]),'|','{0:^20}'.format(field_names[3]),'|','{0:^20}'.format(field_names[4]),sep='')
+        print('-'*104)
+        for line in lines:
+            workshop_content = line.split(',')
+            print('{0:^20}'.format(workshop_content[0]),'|','{0:^20}'.format(workshop_content[1]),'|','{0:^20}'.format(workshop_content[2]),'|','{0:^20}'.format(workshop_content[3]),'|','{0:^20}'.format(workshop_content[4][0:-1]),sep='')
+
+        i_ID = int(input("Enter the Workshop ID for Description need: "))
+        for line in lines:
+            workshop_content = line.split(',')
+            if int(workshop_content[1]) == i_ID:
+                desc = input(workshop_content[2] + "--- Description: ")
+                desc_file = f'./admin/document/workshop/{workshop_content[1]}.txt'
+                with open(desc_file, 'w') as f:
+                        f.write(desc)
 
 
 def reset_password():
@@ -1145,28 +1224,32 @@ def Authority(e):
         b = str(input('Enter "Q" or "q" to exit: '))
         return a
     elif e == 2:
-        update_workshop()
+        ws_description()
+        # b = str(input('Enter "Q" or "q" to exit: '))
         return a
     elif e == 3:
-        delete_workshop()
+        update_workshop()
         return a
     elif e == 4:
+        delete_workshop()
+        return a
+    elif e == 5:
         retrieve_workshop()
         b = str(input('Enter "Q" or "q" to exit: '))       
         return a
-    elif e == 5:
+    elif e == 6:
         add_Sworkshop()
         return a
-    elif e == 6:
+    elif e == 7:
         cancel_Sworkshop()
         return a
-    elif e == 7:
+    elif e == 8:
         retrieve_log()
         return a
-    elif e == 8:
+    elif e == 9:
         reset_password()
         return a
-    elif e == 9:
+    elif e == 10:
         a = False
         return a
 
@@ -1239,7 +1322,7 @@ def main():
             if num_c == 1:
                 a = True
                 while a:
-                    D = {1:"Input & Storage Workshops",2:"Update Workshops",3:"Delete Workshops",4:"Search Workshops",5:"Select Workshops for Students",6:"Cancel the Workshops select by Students",7:"Search & Read Log",8:"Reset Students' Password",9:"Log out"}
+                    D = {1:"Input & Storage Workshops",2:"Add Workshops Description", 3:"Update Workshops",4:"Delete Workshops",5:"Search Workshops",6:"Select Workshops for Students",7:"Cancel the Workshops select by Students",8:"Search & Read Log",9:"Reset Students' Password",10:"Log out"}
                     print()
                     print()
                     print("-"*60)
