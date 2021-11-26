@@ -8,7 +8,7 @@
   - 4. Workshops Description 
   - 4. Admin Announcements System
   - 5. Students Rating Feedback System
-  - 6. Change and Reset Password (part of 8)
+  - 6. Change and Reset Password (part of h)
   - 7. Prevent Duplicate Name System
   - 8. Student Helping Section
  
