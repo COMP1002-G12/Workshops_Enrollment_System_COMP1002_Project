@@ -1,6 +1,7 @@
 import os
 import csv
 
+
 def Sign_Up(b):
 
     """ This part is to register the workshop system """
@@ -37,7 +38,7 @@ def Sign_Up(b):
                 print("Error! This Student Account has been registered, please sign in or register a new account.")
             else:
                 judge = True
-                student_passwd = str(input("Enter Student_Password: "))
+                student_passwd = str(input("Enter Student Password: "))
                 with open(data_file, 'w') as f:
                     f.write(student_passwd)
 
@@ -52,7 +53,6 @@ def Log_In(c):
             
             admin_user = str(input("Admin Username: "))
             admin_user = admin_user.lower()
-            admin_passwd = str(input("Enter Admin Password: "))            
             data_file = f'./admin/user/{admin_user}.txt'
             pathDir = os.listdir('./admin/user')
             T = admin_user + '.txt'
@@ -61,6 +61,7 @@ def Log_In(c):
                 print("Error! This Admin Account has not been registered yet, please enter correct account.")
             else:
                 judge = True
+                admin_passwd = str(input("Enter Admin Password: "))            
                 with open(data_file) as f:
                     contents = f.readline().splitlines()
                     line1 = contents[0]
@@ -79,7 +80,6 @@ def Log_In(c):
             
             student_user_ID = str(input("Student ID: "))
             student_user_ID = student_user_ID.lower()
-            student_passwd = str(input("Enter Student Password: "))
             data_file = f'./student/{student_user_ID}.txt'
             pathDir = os.listdir('./student')
             T = student_user_ID + '.txt'
@@ -88,6 +88,7 @@ def Log_In(c):
                 print("Error! This Student Account has not been registered yet, please enter correct account.")
             else:
                 judge = True
+                student_passwd = str(input("Enter Student Password: "))
                 with open(data_file) as f:
                     contents = f.readline().splitlines()
                     line1 = contents[0]
@@ -140,7 +141,7 @@ def S1(student_user_ID):
 
     ask = int(input("Enter 1 for Read Workshop Description; Enter 2 for Skip: "))
     if ask == 1:
-        student_check_ws()
+        student_check_ws1()
     elif ask == 2:
         pass
 
@@ -379,11 +380,22 @@ def S3(student_user_ID):
         l5 = sorted(l3)
         for i in l5:
             print(i)
+    
     print()
-    ask = int(input("Enter 1 for Read Workshop Description; Enter 2 for Skip: "))
-    if ask == 1:
-        student_check_ws()
-    elif ask == 2:
+    ask1 = int(input("Enter 1 for Read Workshop Announcement; Enter 2 for Skip: "))
+    if ask1 == 1:
+        for b in l4:
+            ws_announcement_read(b)
+            print()
+    elif ask1 == 2:
+        pass
+    
+    print()
+    ask2 = int(input("Enter 1 for Read Workshop Description; Enter 2 for Skip: "))
+    if ask2 == 1:
+        student_check_ws1()
+        z = str(input('Enter "Q" or "q" to exit: '))
+    elif ask2 == 2:
         pass
 
 
@@ -442,10 +454,107 @@ def S4(student_user_ID):
     print("Password modified successfully --- Student Account", student_user_ID)
 
 
-def student_check_ws():
+def feedback_append():
+    workshop_csv = f'./admin/document/workshop.csv'    
+    workshop_list1 = []
+    workshop_list2 = []
+    with open(workshop_csv, 'r', encoding='utf-8') as file:
+        lines = file.readlines()
+        file.close()
+    
+    for line in lines:
+        workshop_content = line.split(',')
+        workshop_list1.append(workshop_content)
+
+    for b in workshop_list1:
+        workshop_list2.append(b[1])
+    
+    if lines == []:
+        print("* No workshop yet. Please add workshop first.")
+        return
+    else:
+        field_names = ['Workshop_ID', 'Workshop_Name']
+        print('-' * 41)
+        print('{0:^20}'.format(field_names[0]), '|', '{0:^20}'.format(field_names[1]),sep='')
+        print('-' * 41)
+        for line in lines:
+            workshop_content = line.split(',')
+            print('{0:^20}'.format(workshop_content[1]), '|',
+                '{0:^20}'.format(workshop_content[2]),sep='')
+    
+        workshop_ID = str(input('Please enter the workshop ID which you want to score(Enter "Q" or "q" to select again): '))
+        if workshop_ID.lower() == 'q':
+            return
+        else:
+            feedback = f'./admin/document/feedback.txt'
+            num = str(input('Please enter the score(1-5): '))
+            
+            with open(feedback,'a') as f:
+                f.write(workshop_ID)
+                f.write('\t')
+                f.write(str(num))
+                f.write('\n')
+                f.close()
+            
+            print("Successfully scored the workshop with ID ---",workshop_ID)
+
+
+def ws_announcement_read(workshop_ID):
+
+    workshop_ann = f'./admin/document/workshop/{workshop_ID}.txt'
+
+    with open(workshop_ann,'r') as f:
+        lines = f.readlines()
+
+    i = len(lines)-1
+    print('This is the workshop with ID',workshop_ID)
+    if i >= 4:
+        print("This is the latest three announcements:")
+        print(1,'-',lines[i])
+        print(2,'-',lines[i-1][:-1])
+        print(3,'-',lines[i-2][:-1])
+
+    elif i >= 3:
+        print("This is the announcement:")
+        print(1,'-',lines[i])
+        print(2,'-',lines[i-1][:-1])
+    
+    elif i >= 2:
+        print("This is the announcement:")
+        print(1,'-',lines[i])
+
+    else:
+        print("This workshop has no announcement yet")
+
+
+def student_check_ws1():
     workshop_id = input("Enter the Workshop ID: ")
     desc_file = workshop_id + ".txt"
     file_dir = "./admin/document/workshop/"
+    pathDir = os.listdir(file_dir)
+
+    while desc_file not in pathDir:
+        print("Error! There is no description for this course, please re-enter ")
+        workshop_id = input("Enter the Workshop ID: ")
+        desc_file = workshop_id + ".txt"
+    
+    file = file_dir + desc_file
+    
+    with open(file, "r") as f:
+        content = f.readlines()
+    print()
+    print("Description: " + ''.join(content))
+
+
+def student_check_ws2(workshop_id):
+    desc_file = workshop_id + ".txt"
+    file_dir = "./admin/document/workshop/"
+    pathDir = os.listdir(file_dir)
+
+    if desc_file not in pathDir:
+        print("Error! There is no description for this course.")
+        return
+
     file = file_dir + desc_file
     
     with open(file, "r") as f:
@@ -464,12 +573,14 @@ def Student(d,ID):
         return a
     elif d == 3:
         S3(ID)
-        b = str(input('Enter "Q" or "q" to exit: '))
         return a
     elif d == 4:
         S4(ID)
         return a
-    elif d == 4:
+    elif d == 5:
+        feedback_append()
+        return a
+    elif d == 6:
         a = False
         return a
 
@@ -510,6 +621,15 @@ def judgement5(workshop_list1,workshop):
     return controller
 
 
+def judgement6(workshop_list1,workshop_ID,workshop_name):
+    controller = True
+    for i in range(len(workshop_list1)):
+        if controller:
+            if str(workshop_ID) == workshop_list1[i][1] or workshop_name == workshop_list1[i][2]:
+                controller = False
+    return controller
+
+
 def update_workshop():
     workshop_list1 = []
     workshop_csv = f'./admin/document/workshop.csv'    
@@ -537,7 +657,9 @@ def update_workshop():
         workshop_content = line.split(',')
         workshop_list1.append(workshop_content)
     
-    workshop_ID = str(input("Please enter current workshop ID: "))
+    workshop_ID = str(input('Please enter current workshop ID(Enter "Q" or "q" to select again): '))
+    if workshop_ID.lower() == 'q':
+        return
     workshop_name = str(input("Please enter current workshop name: "))
     
     while judgement3(workshop_list1,workshop_ID,workshop_name):
@@ -642,6 +764,83 @@ def update_workshop():
         
         elif n == 4:
             z = False
+
+
+def feedback_read():
+    feedback = f'./admin/document/feedback.txt'
+    with open(feedback,'r') as f:    
+        data = f.readlines()            
+        f.close   
+
+    s1 = ''.join(data)
+    l = s1.split()
+    l1 = l[::2]
+    l2 = l[1::2]                    
+    l2 = list(map(int, l2))
+    if l1 == l2 == []:
+        print("* No students have rated the workshop yet.")
+        return
+    else:
+        s = list()
+        d = dict()
+        for c in l1:
+            s.append(c)
+
+        l5 = []
+        for e in s:
+            if e not in l5:
+                l5.append(e)
+            else:
+                continue
+        
+        
+        for id in range(len(l5)):
+            l[id] = []
+            for i in range(len(l2)):
+                d1 = {l1[i]:l2[i]}
+
+                for key,val in d1.items():
+                    if key == l5[id]:
+                        l[id] += [val]
+        
+            total = 0
+            for a in l[id]:
+                total += a
+
+            n = len(l[id])
+            avg = total/n
+            d.update({l5[id]:avg})
+
+        print('-' * 40)
+        print('{0:^20}'.format("Workshop_ID"),'|','{0:^15}'.format("Average"))
+        print('-' * 40)
+        for k,v in d.items():
+            print('{0:^20}'.format(k),'|','{0:^15}'.format('{0:.1f}'.format(v)))
+
+        workshop_ID = str(input('Please enter the workshop ID which you want to read(Enter "Q" or "q" to select again): '))
+        if workshop_ID.lower() == 'q':
+            return
+        
+        while workshop_ID not in l5:
+            print("This workshop has not been rated yet.")
+            workshop_ID = str(input('Please enter the workshop ID which you want to read(Enter "Q" or "q" to select again): '))
+
+        l4 = []
+        for i in range(len(l2)):
+            d1 = {l1[i]:l2[i]}
+
+            for key,val in d1.items():
+                if key == workshop_ID:
+                    l4 += [val]
+        total = 0
+        for a in l4:
+            total += a
+        
+        n = len(l4)
+        print(n)
+        avg = total/n
+        print("The average score of the workshop with ID ---",workshop_ID ,"is","{0:.1f}".format(avg))
+        z = str(input('Enter "Q" or "q" to exit: '))       
 
 
 def delete_workshop():
@@ -750,6 +949,8 @@ def delete_workshop():
                             if line.strip("\n") != c+'\t'+workshop_ID:
                                 f.write(line)
 
+        z = str(input('Enter "Q" or "q" to quit:')) 
+
 
 def retrieve_workshop():
     workshop_csv = f'./admin/document/workshop.csv'    
@@ -791,14 +992,16 @@ def retrieve_workshop():
     for b in workshop_list1:
         if workshop == b[1] or workshop == b[2]:
             print('{0:^20}'.format(b[1]), '|', '{0:^20}'.format(b[2]), '|','{0:^20}'.format(b[3]),'|','{0:^20}'.format(b[4][0:-1]), sep='')
-    
+            workshop_ID = b[1]
+
     print()
-    ask = int(input("Enter 1 for Read Workshop Description; Enter 2 for Skip: "))
+    ask = int(input("Enter 1 for Read Workshop Description; Enter 2 for quit: "))
     if ask == 1:
-        student_check_ws()
+        student_check_ws2(workshop_ID)
+        z = str(input('Enter "Q" or "q" to quit:'))
         print()
     elif ask == 2:
-        pass
+        return
 
 
 def storage_workshop():
@@ -827,18 +1030,17 @@ def storage_workshop():
             file.close()
 
         length = len(lines)
-        workshop_ID = str(input("Please enter the ID of the workshop: "))
+        workshop_ID = str(input('Please enter the ID of the workshop: '))
         workshop_name = str(input("Please enter the workshop name: "))
 
         for line in lines:
             workshop_content = line.split(',')
             workshop_list.append(workshop_content)
 
-        for b in workshop_list:
-            while workshop_name in b[2] or str(workshop_ID) in b[1]:
-                print("There is already a workshop with the same ID or name, please change the ID or name: ")
-                workshop_ID = str(input("Please enter the ID of the workshop: "))
-                workshop_name = str(input("Please enter the workshop name: "))
+        while not judgement6(workshop_list,workshop_ID,workshop_name):
+            print("There is already a workshop with the same ID or name, please change the ID or name: ")
+            workshop_ID = str(input("Please enter the ID of the workshop: "))
+            workshop_name = str(input("Please enter the workshop name: "))
 
         remain = total = int(input("Please enter the total number of students: "))
         remind = int(input("Enter 1 for Continue, Enter 2 for Quit: "))
@@ -851,6 +1053,11 @@ def storage_workshop():
                 csv_writer.writerow(data) 
             file.close()
 
+            ws_file = f'./admin/document/workshop/{workshop_ID}.txt'
+            with open(ws_file,'w') as f:
+                f.write('\n')
+                f.close()
+
         elif remind == 2:
             judge = True
             Index = length + 1
@@ -860,10 +1067,20 @@ def storage_workshop():
                 csv_writer.writerow(data) 
             file.close()
 
-    with open (workshop_csv,'r',encoding='utf-8') as file:
-        lines = file.readlines()
+            ws_file = f'./admin/document/workshop/{workshop_ID}.txt'
+            with open(ws_file,'w') as f:
+                f.write('\n')
+                f.close()
 
     field_names = ['Index','Workshop_ID','Workshop_Name','Total','Remain']
+
+    with open (workshop_csv,'r',encoding='utf-8') as file:
+        lines = file.readlines()
+        file.close()
+
+    for line in lines:
+        workshop_content = line.split(',')
+        workshop_list.append(workshop_content)
 
     print('-'*104)
     print('{0:^20}'.format(field_names[0]),'|','{0:^20}'.format(field_names[1]),'|','{0:^20}'.format(field_names[2]),'|','{0:^20}'.format(field_names[3]),'|','{0:^20}'.format(field_names[4]),sep='')
@@ -873,42 +1090,81 @@ def storage_workshop():
         print('{0:^20}'.format(workshop_content[0]),'|','{0:^20}'.format(workshop_content[1]),'|','{0:^20}'.format(workshop_content[2]),'|','{0:^20}'.format(workshop_content[3]),'|','{0:^20}'.format(workshop_content[4][0:-1]),sep='')
 
 
+    z = str(input('Enter "Q" or "q" to exit: '))
+
+
 def ws_description():
 
     workshop_csv = f"./admin/document/workshop.csv"
+    workshop_list1 = []
 
     with open (workshop_csv,'r',encoding='utf-8') as file:
         lines = file.readlines()
+
+    for line in lines:
+        workshop_content = line.split(',')
+        workshop_list1.append(workshop_content)
+
     if lines == []:
         print("* No workshop yet. Please add workshop first.")
         return
     else:
-        field_names = ['Index','Workshop_ID','Workshop_Name','Total','Remain']
+        field_names = ['Workshop_ID','Workshop_Name']
 
-        print('-'*104)
-        print('{0:^20}'.format(field_names[0]),'|','{0:^20}'.format(field_names[1]),'|','{0:^20}'.format(field_names[2]),'|','{0:^20}'.format(field_names[3]),'|','{0:^20}'.format(field_names[4]),sep='')
-        print('-'*104)
+        print('-'*45)
+        print('{0:^20}'.format(field_names[0]),'|','{0:^25}'.format(field_names[1]),sep='')
+        print('-'*45)
         for line in lines:
             workshop_content = line.split(',')
-            print('{0:^20}'.format(workshop_content[0]),'|','{0:^20}'.format(workshop_content[1]),'|','{0:^20}'.format(workshop_content[2]),'|','{0:^20}'.format(workshop_content[3]),'|','{0:^20}'.format(workshop_content[4][0:-1]),sep='')
+            print('{0:^20}'.format(workshop_content[1]),'|','{0:^25}'.format(workshop_content[2]),sep='')
 
-        i_ID = int(input("Enter the Workshop ID for Description need: "))
-        for line in lines:
-            workshop_content = line.split(',')
-            if int(workshop_content[1]) == i_ID:
-                desc = input(workshop_content[2] + "--- Description: ")
-                desc_file = f'./admin/document/workshop/{workshop_content[1]}.txt'
-                with open(desc_file, 'w') as f:
-                        f.write(desc)
+        i_ID = str(input('Enter the Workshop ID for Description need(Enter "Q" or "q" to select again): '))
+        
+        if i_ID.lower() == 'q':
+            return
+
+        while judgement5(workshop_list1,i_ID):
+            i_ID = str(input('Enter the Workshop ID for Description need(Enter "Q" or "q" to select again): '))
+            if i_ID.lower() == 'q':
+                return
+
+        desc = str(input("Please enter the description of the workshop with ID "+i_ID+": "))    
+        desc_file = f'./admin/document/workshop/{i_ID}.txt'
+        with open(desc_file,'r') as f:
+            lines = f.readlines()
+
+        lines[0] = desc + '\n'
+
+        with open(desc_file,'w') as f:
+            for line in lines:
+                f.write(line)
+            f.close()
 
 
 def reset_password():
     
     """ This part can reset the student's Log_In password """
             
-    student_user_ID = str(input("Please give the ID of the student: "))
+    student_user_ID = str(input('Please give the ID of the student(Enter "Q" or "q" to select again): '))
     student_user_ID = student_user_ID.lower()
+    if student_user_ID == "q":
+        print()
+        return
     username = f'./student/{student_user_ID}.txt'
+    pathDir = os.listdir('./student')
+    T = student_user_ID + '.txt'
+
+    while T not in pathDir:
+        print("Error! This Student Account has not been registered yet, please enter correct account.")
+        student_user_ID = str(input('Please give the ID of the student(Enter "Q" or "q" to select again): '))
+        student_user_ID = student_user_ID.lower()
+        T = student_user_ID + '.txt'
+        if student_user_ID == "q":
+            print()
+            return
+    
+        
+    
     change = int(input("Choose: Enter 1 to reset password; Enter 2 to quit:\n"))
 
     if change == 1:
@@ -925,6 +1181,51 @@ def reset_password():
         print("Password reseted successfully --- Student Account", student_user_ID)                
     elif change == 2:
         print("Quit successfully.")
+
+
+def ws_announcement_write():
+    workshop_csv = f"./admin/document/workshop.csv"
+
+    with open (workshop_csv,'r',encoding='utf-8') as file:
+        lines = file.readlines()
+    if lines == []:
+        print("* No workshop yet. Please add workshop first.")
+        return
+    else:
+        field_names = ['Workshop_ID','Workshop_Name']
+
+        print('-'*42)
+        print('{0:^20}'.format(field_names[0]),'|','{0:^20}'.format(field_names[1]),sep='')
+        print('-'*42)
+        for line in lines:
+            workshop_content = line.split(',')
+            print('{0:^20}'.format(workshop_content[1]),'|','{0:^20}'.format(workshop_content[2]),sep='')
+
+        workshop_ID = str(input('Enter the Workshop ID for Announcement need(Enter "Q" or "q" to select again): '))
+        if workshop_ID.lower() == 'q':
+            return
+        
+        pathDir = os.listdir('./admin/document/workshop/')
+        T = workshop_ID + '.txt'
+
+        while T not in pathDir:
+            print("* No such workshop yet.")
+            workshop_ID = str(input('Enter the Workshop ID for Announcement need(Enter "Q" or "q" to select again): '))
+            T = workshop_ID + '.txt'
+            if workshop_ID == "q":
+                print()
+                return
+        
+        workshop_ann = f'./admin/document/workshop/{workshop_ID}.txt'
+
+        anno = str(input("Please enter Announcement: "))
+
+        with open(workshop_ann,'a') as f:
+                f.write('\n')
+                f.write(anno)
+                f.close
+
+        print("Succeeded in adding announcement ---",workshop_ID)
 
 
 def retrieve_log():
@@ -958,7 +1259,6 @@ def retrieve_log():
             
     while True:        
         choose = {1:"Input the workshop number to know who chose this workshop",2:"Input student_ID to know which workshops are selected",3:"Quit"}
-        print()
         print()
         print("-"*75)
         print("{0:^10}".format("Number"),'|',"{0:^65}".format("Function"))
@@ -1036,6 +1336,18 @@ def cancel_Sworkshop():
     if student_user_ID == 'q':
         return
     else:
+        pathDir = os.listdir('./student')
+        T = student_user_ID + '.txt'
+        
+        while T not in pathDir:
+            print("Error! This Student Account has not been registered yet, please enter correct account.")
+            student_user_ID = str(input('Please give the ID of the student(Enter "Q" or "q" to select again): '))
+            student_user_ID = student_user_ID.lower()
+            T = student_user_ID + '.txt'
+            if student_user_ID == "q":
+                print()
+                return
+        
         l = []
         for i in range(len(l2)):
             d1 = {l1[i]:l2[i]}
@@ -1149,6 +1461,18 @@ def add_Sworkshop():
     if student_user_ID == "q":
         return
     else:
+        pathDir = os.listdir('./student')
+        T = student_user_ID + '.txt'
+            
+        while T not in pathDir:
+            print("Error! This Student Account has not been registered yet, please enter correct account.")
+            student_user_ID = str(input('Please give the ID of the student(Enter "Q" or "q" to select again): '))
+            student_user_ID = student_user_ID.lower()
+            T = student_user_ID + '.txt'
+            if student_user_ID == "q":
+                print()
+                return
+
         l = []
         for i in range(len(l2)):
             d1 = {l1[i]:l2[i]}
@@ -1217,41 +1541,63 @@ def add_Sworkshop():
                     csv_writer.writerow(c)
 
 
-def Authority(e):
+def Authority1(e):
     a = True
     if e == 1:
         storage_workshop()
-        b = str(input('Enter "Q" or "q" to exit: '))
         return a
     elif e == 2:
         ws_description()
-        # b = str(input('Enter "Q" or "q" to exit: '))
         return a
     elif e == 3:
         update_workshop()
         return a
     elif e == 4:
-        delete_workshop()
+        ws_announcement_write()
         return a
     elif e == 5:
-        retrieve_workshop()
-        b = str(input('Enter "Q" or "q" to exit: '))       
+        delete_workshop()
         return a
     elif e == 6:
-        add_Sworkshop()
+        retrieve_workshop()
         return a
     elif e == 7:
-        cancel_Sworkshop()
-        return a
+        feedback_read()
+        return a 
     elif e == 8:
         retrieve_log()
         return a
     elif e == 9:
-        reset_password()
+        b = True
+        while b:
+            D = {1:"Select Workshops for Students",2:"Cancel the Workshops select by Students",3:"Reset Students' Password",4:"Reselect"}
+            print("-"*60)
+            print("{0:^10}".format("Number"),'|',"{0:^45}".format("Function"))
+            print("-"*60)
+            for k,v in D.items():
+                print("{0:^10}".format(k),'|',"{0:}".format(v))
+            f = int(input('Enter the number:\n'))
+            b = Authority2(f)
         return a
     elif e == 10:
         a = False
         return a
+
+
+def Authority2(e):
+    b = True
+    if e == 1:
+        add_Sworkshop()
+        return b
+    elif e == 2:
+        cancel_Sworkshop()
+        return b
+    elif e == 3:
+        reset_password()
+        return b
+    elif e == 4:
+        b = False
+        return b
 
 
 def start():
@@ -1322,21 +1668,21 @@ def main():
             if num_c == 1:
                 a = True
                 while a:
-                    D = {1:"Input & Storage Workshops",2:"Add Workshops Description", 3:"Update Workshops",4:"Delete Workshops",5:"Search Workshops",6:"Select Workshops for Students",7:"Cancel the Workshops select by Students",8:"Search & Read Log",9:"Reset Students' Password",10:"Log out"}
+                    D = {1:"Input & Storage Workshops",2:"Add Workshops Description", 3:"Update Workshops",4:"Add Workshops Announcement",5:"Delete Workshops",6:"Search Workshops",7:"View feedback rating",8:"Search & Read Log",9:"* Student helping section",10:"Log out"}
                     print()
                     print()
-                    print("-"*60)
-                    print("{0:^10}".format("Number"),'|',"{0:^45}".format("Function"))
-                    print("-"*60)
+                    print("-"*50)
+                    print("{0:^10}".format("Number"),'|',"{0:^35}".format("Function"))
+                    print("-"*50)
                     for k,v in D.items():
                         print("{0:^10}".format(k),'|',"{0:}".format(v))
                     e = int(input('Enter the number:\n'))
-                    a = Authority(e)
+                    a = Authority1(e)
 
             elif num_c == 2:
                 a = True
                 while a:
-                    d = {1:"Enroll Workshops", 2:"Cancel Workshops",3:"Read Workshops",4:"Change Password", 5:"Log out"}
+                    d = {1:"Enroll Workshops", 2:"Cancel Workshops",3:"Read Workshops",4:"Change Password",5:"Anonymous rating",6:"Log out"}
                     print()
                     print("-"*35)
                     print("{0:^10}".format("Number"),'|',"{0:^20}".format("Function"))
