@@ -2,12 +2,12 @@
 
 ## Workshops Enrollment System
 - Functions:
-  - Workshop Information Input/Storage/Update/Retrieval by Administrator
-  - Workshop Enrollment/Cancellation by Students
+  - Workshop Information Input / Storage / Update / Retrieval by Administrator
+  - Workshop Enrollment / Cancellation by Students
   - System Login by Administrator and Students
-  - Workshops Description
-  - Admin Announcements
-  - Students Rating Feedback
+  - Workshops Description 
+  - Admin Announcements System
+  - Students Rating Feedback System
  
 *Remind: This program use TXT file and CSV file to storage data
 
