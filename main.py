@@ -837,7 +837,6 @@ def feedback_read():
             total += a
         
         n = len(l4)
-        print(n)
         avg = total/n
         print("The average score of the workshop with ID ---",workshop_ID ,"is","{0:.1f}".format(avg))
         z = str(input('Enter "Q" or "q" to exit: '))       
