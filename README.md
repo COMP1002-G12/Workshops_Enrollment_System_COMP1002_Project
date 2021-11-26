@@ -2,14 +2,15 @@
 
 ## Workshops Enrollment System
 - Functions:
-  - Workshop Information Input / Storage / Update / Retrieval by Administrator
-  - Workshop Enrollment / Cancellation by Students
-  - System Login by Administrator and Students
-  - Workshops Description 
-  - Admin Announcements System
-  - Students Rating Feedback System
-  - Change and Reset Password
-  - Prevent Duplicate Name System
+  - 1. Workshop Information Input / Storage / Update / Retrieval by Administrator
+  - 2. Workshop Enrollment / Cancellation by Students
+  - 3. System Login by Administrator and Students
+  - 4. Workshops Description 
+  - 4. Admin Announcements System
+  - 5. Students Rating Feedback System
+  - 6. Change and Reset Password (part of 8)
+  - 7. Prevent Duplicate Name System
+  - 8. Student Helping Section
  
 *Remind: This program use TXT file and CSV file to storage data
 
