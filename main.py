@@ -1622,7 +1622,6 @@ def about():
     print("*" + " JIANG Guanlin (21093962d)" + " " * 13 + "*")
     print("*" + " LIU Minghao (21096308d)" + " " * 15 + "*")
     print("*" + " CHEN Ziyang (21095751d)" + " " * 15 + "*")
-    print("*" + " HE Boyan (21096184d)" + " " * 18 + "*")
     print("*" + " " * 39 + "*")
     print("*" + "Software Copyright© belongs to Group 12" + "*")
     print("*" + " " * 39 + "*")
