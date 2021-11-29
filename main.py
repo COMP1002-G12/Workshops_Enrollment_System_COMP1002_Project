@@ -3,6 +3,8 @@ import csv
 
 
 def Sign_Up(b):
+    
+    """ The Sign_Up function is that an admin and student can register in this system and set up a login password. This function also includes a duplicate name system, that is, you cannot register with the same user name. """
 
     if b == 1:
         judge = False
@@ -43,6 +45,8 @@ def Sign_Up(b):
 
 def Log_In(c):
     
+    """ The Log_In function is that an admin and student can log in to this system, and the password is entered during registration. The Log_In function is that an admin and student can log in to this system, and the password is entered during registration. """
+
     if c == 1:
         judge = False
         while not judge:
@@ -100,6 +104,9 @@ def Log_In(c):
 
 
 def judgement2(workshop_list1,signup):
+    
+    """ The judgement2 function is a circular judgment, which judges whether the ID of the workshop entered by the student is in the existing workshop, and returns True or False. """
+
     controller = True
     for i in range(len(workshop_list1)):
         if controller:
@@ -109,6 +116,8 @@ def judgement2(workshop_list1,signup):
 
 
 def S1(student_user_ID):
+
+    """ The S1 function is to enroll workshop by student based on the student ID. """
 
     log = f'./admin/document/log.txt'
     data_file = f'./student/{student_user_ID}.txt'
@@ -230,6 +239,8 @@ def S1(student_user_ID):
 
 def S2(student_user_ID):
 
+    """ The S2 function is to delete workshop by student based on the student ID. """
+
     data_file = f'./student/{student_user_ID}.txt'
     log = f'./admin/document/log.txt'
     workshop_csv = f'./admin/document/workshop.csv'
@@ -325,6 +336,8 @@ def S2(student_user_ID):
 
 def S3(student_user_ID):
     
+    """ The S3 function is based on the student ID to retrieve the selected workshop information and its announcement, or you can find other workshop information. """
+
     data_file = f'./student/{student_user_ID}.txt'
     workshop_csv = f'./admin/document/workshop.csv'
     workshop_list1 = []
@@ -396,6 +409,8 @@ def S3(student_user_ID):
 
 def S4(student_user_ID):
 
+    """ The S4 function is to modify the password of your account based on the student ID. """
+
     data_file = f'./student/{student_user_ID}.txt'
     
     with open(data_file,'r') as f:
@@ -449,6 +464,8 @@ def S4(student_user_ID):
 
 def feedback_append():
 
+    """ The feedback_append function is for students to give feedback to the workshop anonymously, and the student ID will not appear. """
+
     workshop_csv = f'./admin/document/workshop.csv'    
     workshop_list1 = []
     workshop_list2 = []
@@ -496,6 +513,8 @@ def feedback_append():
 
 def ws_announcement_read(workshop_ID):
 
+    """ The ws_announcement_read function is based on the workshop_ID to find the announcement of the corresponding workshop. """
+
     workshop_ann = f'./admin/document/workshop/{workshop_ID}.txt'
 
     with open(workshop_ann,'r') as f:
@@ -523,6 +542,9 @@ def ws_announcement_read(workshop_ID):
 
 
 def student_check_ws1():
+    
+    """ The student_check_ws1 function is to find the corresponding description by entering the ID of the workshop. """
+
     workshop_id = input("Enter the Workshop ID: ")
     desc_file = workshop_id + ".txt"
     file_dir = "./admin/document/workshop/"
@@ -543,6 +565,8 @@ def student_check_ws1():
 
 def student_check_ws2(workshop_id):
     
+    """ The student_check_ws2 function is to find the corresponding description based on the ID of the workshop. """
+
     desc_file = workshop_id + ".txt"
     file_dir = "./admin/document/workshop/"
     pathDir = os.listdir(file_dir)
@@ -560,6 +584,9 @@ def student_check_ws2(workshop_id):
 
 
 def Student(d,ID):
+    
+    """ The Student function is based on the selected serial number and student ID to call the corresponding function respectively. """
+
     a = True
     if d == 1:
         S1(ID)
@@ -582,6 +609,9 @@ def Student(d,ID):
 
 
 def judgement1(workshop_list1,workshop):
+    
+    """ The judgement1 function is a circular judgment, which judges Whether the name of the workshop entered by the admin is in the existing workshop, and returns True or False. """
+
     controller = True
     for i in range(len(workshop_list1)):
         if controller:
@@ -591,6 +621,9 @@ def judgement1(workshop_list1,workshop):
 
 
 def judgement3(workshop_list1,workshop_ID,workshop_name):
+    
+    """ The judgement3 function is a circular judgment, which judges whether the workshop name and ID entered by the admin match in the existing workshop, and returns True or False. """
+
     controller = True
     for i in range(len(workshop_list1)):
         if controller:
@@ -600,6 +633,9 @@ def judgement3(workshop_list1,workshop_ID,workshop_name):
 
 
 def judgement4(workshop_list1,workshop):
+    
+    """ The judgement4 function is a circular judgment, which judges whether the workshop name or ID entered by the admin is in the existing workshop, and returns True or False. """
+
     controller = True
     for i in range(len(workshop_list1)):
         if controller:
@@ -609,6 +645,9 @@ def judgement4(workshop_list1,workshop):
 
 
 def judgement5(workshop_list1,workshop):
+    
+    """ The judgement5 function is a circular judgment, which judges whether the ID of the workshop entered by the admin is in the existing workshop, and returns True or False. """
+    
     controller = True
     for i in range(len(workshop_list1)):
         if controller:
@@ -618,6 +657,9 @@ def judgement5(workshop_list1,workshop):
 
 
 def judgement6(workshop_list1,workshop_ID,workshop_name):
+    
+    """ The judgement6 function is a circular judgment, which judges whether the name or ID of the workshop entered by the admin is in the existing workshop, and returns True or False. """
+
     controller = True
     for i in range(len(workshop_list1)):
         if controller:
@@ -627,6 +669,9 @@ def judgement6(workshop_list1,workshop_ID,workshop_name):
 
 
 def update_workshop():
+    
+    """ The update_workshop function is the name or total number or description of the admin for the existing workshop. """
+    
     z = True
     while z:
         workshop_list1 = []
@@ -766,6 +811,8 @@ def update_workshop():
 
 def feedback_read():
     
+    """ The feedback_read function is an overview or search of feedback from the admin to the workshop. """
+
     feedback = f'./admin/document/feedback.txt'
     
     with open(feedback,'r') as f:    
@@ -844,6 +891,8 @@ def feedback_read():
 
 def delete_workshop():
     
+    """ The delete_workshop function is the deletion of the existing workshop by the admin. """
+
     workshop_list1 = []
     log = f'./admin/document/log.txt'
     workshop_csv = f'./admin/document/workshop.csv'    
@@ -955,6 +1004,8 @@ def delete_workshop():
 
 def retrieve_workshop():
     
+    """ The retrieve_workshop function is the admin's overview and search of existing workshops. """
+    
     workshop_csv = f'./admin/document/workshop.csv'    
     workshop_list1 = []
     with open(workshop_csv, 'r', encoding='utf-8') as file:
@@ -1007,6 +1058,8 @@ def retrieve_workshop():
 
 
 def storage_workshop():
+    
+    """ The storage_workshop function is the input and storage of the admin to the workshop. """
     
     workshop_csv = f'./admin/document/workshop.csv'        
     workshop_list = []
@@ -1098,6 +1151,8 @@ def storage_workshop():
 
 def ws_description():
 
+    """ The ws_description function is the input and storage of the description of the workshop by the admin. """
+
     workshop_csv = f"./admin/document/workshop.csv"
     workshop_list1 = []
 
@@ -1145,7 +1200,9 @@ def ws_description():
 
 
 def reset_password():
-                
+    
+    """ The reset_password function is for the admin to reset the account password of the entered student ID, the reset password is ‘12345678’. """
+
     student_user_ID = str(input('Please give the ID of the student(Enter "Q" or "q" to select again): '))
     student_user_ID = student_user_ID.lower()
     if student_user_ID == "q":
@@ -1186,6 +1243,8 @@ def reset_password():
 
 def ws_announcement_write():
     
+    """ The ws_announcement_write function is for the admin to write an announcement to the input workshop ID. """
+
     workshop_csv = f"./admin/document/workshop.csv"
 
     with open (workshop_csv,'r',encoding='utf-8') as file:
@@ -1232,6 +1291,8 @@ def ws_announcement_write():
 
 def retrieve_log():
     
+    """ The retrieve_log function is for the admin to overview and find the workshop selected by the student. """
+
     log = f'./admin/document/log.txt'
     with open(log,'r') as f:    
         print("The log is:")
@@ -1300,6 +1361,8 @@ def retrieve_log():
 
 def cancel_Sworkshop():
     
+    """ The cancel_Sworkshop function is that the admin deletes the workshop that the student has selected for the entered student ID. """
+
     workshop_csv = f'./admin/document/workshop.csv'
     log = f'./admin/document/log.txt'
     workshop_list1 = []
@@ -1423,6 +1486,8 @@ def cancel_Sworkshop():
 
 def add_Sworkshop():
     
+    """ The add_Sworkshop function is that the admin enrolls the entered student ID to the workshop that the student has not selected yet. """
+
     workshop_csv = f'./admin/document/workshop.csv'
     log = f'./admin/document/log.txt'
     workshop_list1 = []
@@ -1539,6 +1604,9 @@ def add_Sworkshop():
 
 
 def Authority1(e):
+    
+    """ The Authority1 function is based on the serial number to call the corresponding function. """
+    
     a = True
     if e == 1:
         storage_workshop()
@@ -1582,6 +1650,9 @@ def Authority1(e):
 
 
 def Authority2(e):
+    
+    """ The Authority2 function is based on the serial number to call the corresponding function. """
+
     b = True
     if e == 1:
         add_Sworkshop()
@@ -1598,6 +1669,9 @@ def Authority2(e):
 
 
 def start():
+
+    """ The start function is to print a start interface. """
+
     print("*" * 35)
     print("*" + " " * 33 + "*")
     print("*" + " " * 33 + "*")
@@ -1612,6 +1686,9 @@ def start():
 
 
 def about():
+    
+    """ The about function is to print a detail about the project. """
+
     print("*" * 41)
     print("*" + " " * 15 + "--About--" + " " * 15 + "*")
     print("*" + " " * 39 + "*")
@@ -1622,6 +1699,7 @@ def about():
     print("*" + " JIANG Guanlin (21093962d)" + " " * 13 + "*")
     print("*" + " LIU Minghao (21096308d)" + " " * 15 + "*")
     print("*" + " CHEN Ziyang (21095751d)" + " " * 15 + "*")
+    print("*" + " HE Boyan (21096184d)" + " " * 18 + "*")
     print("*" + " " * 39 + "*")
     print("*" + "Software Copyright© belongs to Group 12" + "*")
     print("*" + " " * 39 + "*")
@@ -1629,6 +1707,8 @@ def about():
 
 
 def main():
+    
+    """ The main function is to connect and call the corresponding function to maintain the entire system running. """
     
     while True:
         a = {1:"Sign Up", 2:"Sign In", 3:"Quit", 4:"About"}
