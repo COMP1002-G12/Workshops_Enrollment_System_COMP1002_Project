@@ -16,7 +16,7 @@
 *Remind 2: This program use TXT file and CSV file to storage data
 
 ### Group Members (PolyU Class 2025 COMP1002 Group 12): 
-#### Guanlin JIANG, Minghao LIU, Ziyang CHEN, Boyan HE
+#### Guanlin JIANG, Minghao LIU, Ziyang CHEN
 
 
 <br>
