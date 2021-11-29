@@ -22,4 +22,4 @@
 <br>
 <br>
 
-##### The Final Copyright & Interpretation Right belong to us.
+##### The Final Copyright & Interpretation Right belong to Guanlin JIANG, Minghao LIU, Ziyang CHEN.
