@@ -1,5 +1,5 @@
 # Workshops Enrollment System (COMP1002_Group12_Project)
----
+
 - Functions:
   - 1. Workshop Information Input / Storage / Update / Retrieval by Administrator
   - 2. Workshop Enrollment / Cancellation by Students
@@ -13,6 +13,7 @@
  
 *Remind 1: main.py is the only Python file that can run <br>
 *Remind 2: This program use TXT file and CSV file to storage data
+---
 
 ### Group Members (PolyU Class 2025 COMP1002 Group 12): 
 #### Guanlin JIANG, Minghao LIU, Ziyang CHEN
