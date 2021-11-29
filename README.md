@@ -1,6 +1,5 @@
-# COMP1002_Group12_Project
-
-## Workshops Enrollment System
+# Workshops Enrollment System (COMP1002_Group12_Project)
+---
 - Functions:
   - 1. Workshop Information Input / Storage / Update / Retrieval by Administrator
   - 2. Workshop Enrollment / Cancellation by Students
