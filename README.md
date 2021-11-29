@@ -12,7 +12,8 @@
   - 7. Prevent Duplicate Name System
   - 8. Student Helping Section
  
-*Remind: This program use TXT file and CSV file to storage data
+*Remind 1: main.py is the only Python file that can run
+*Remind 2: This program use TXT file and CSV file to storage data
 
 ### Group Members (PolyU Class 2025 COMP1002 Group 12): 
 #### Guanlin JIANG, Minghao LIU, Ziyang CHEN, Boyan HE
