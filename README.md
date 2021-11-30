@@ -17,8 +17,8 @@
 ---
 ### Group Members (PolyU Class 2025 COMP1002 Group 12): 
 #### Guanlin JIANG (https://github.com/David200308)
-### Minghao LIU (https://github.com/David72808)
-### Ziyang CHEN (https://github.com/RockyChenZiyang)
+#### Minghao LIU (https://github.com/David72808)
+#### Ziyang CHEN (https://github.com/RockyChenZiyang)
 
 
 <br>
