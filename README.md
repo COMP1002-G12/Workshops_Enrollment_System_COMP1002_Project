@@ -20,7 +20,7 @@ Report Link: https://doi.org/10.6084/m9.figshare.17099261.v1
 ---
 ### Group Members (PolyU Class 2025 COMP1002 Group 12): 
 #### Guanlin JIANG (https://github.com/David200308)
-#### Minghao LIU (https://github.com/David72808)
+#### Minghao LIU (https://github.com/David-Lmh)
 #### Ziyang CHEN (https://github.com/RockyChenZiyang)
 
 
